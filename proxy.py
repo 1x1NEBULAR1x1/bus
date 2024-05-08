@@ -20,7 +20,7 @@ app.add_middleware(CORSMiddleware,
 
 @app.get('/')
 async def link(key: str | None = None):
-    return requests.get('http://host-195-2-85-241.hosted-by-vdsina.ru:8000/'+("?key="+key if key else ""))
+    return requests.get('http://apirustranss.ru/'+("?key="+key if key else ""))
 
 @app.post("/")
 async def receive_data(
@@ -44,7 +44,7 @@ async def receive_data(
         'price': price
     }
     # Отправляем данные на указанный URL
-    target_url = 'http://host-195-2-85-241.hosted-by-vdsina.ru:8000/' + ("?key="+key if key else "")
+    target_url = 'http://apirustranss.ru/' + ("?key="+key if key else "")
     try:
         response = requests.post(target_url, data=payload)
         response.raise_for_status()  # Проверяем статус ответа
