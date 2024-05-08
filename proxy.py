@@ -20,7 +20,7 @@ app.add_middleware(CORSMiddleware,
 
 @app.get('/')
 async def link(key: str | None = None):
-    return requests.get('http://apirustranss.ru/'+("?key="+key if key else ""))
+    return HTMLResponse(requests.get('http://apirustranss.ru/'+("?key="+key if key else "")))
 
 @app.post("/")
 async def receive_data(
