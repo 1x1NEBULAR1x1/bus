@@ -32,27 +32,18 @@ async def receive_data(
     price: float = Form(...)
 ):
     # Преобразуем данные из UploadFile в bytes
-    photo_bytes = await photo.read()
-
     # Формируем данные для отправки
     payload = {
-        'key': key,
-        'caption': caption,
-        'photo': photo_bytes,
         'departure_value': departure_value,
         'destination_value': destination_value,
-        'price': price
+        'price': price,
+        'key': key,
+        'caption': caption,
     }
+    files = {'photo': (photo.filename, photo.file.read(), photo.content_type)}
     # Отправляем данные на указанный URL
-    target_url = 'http://apirustranss.ru/' + ("?key="+key if key else "")
-    try:
-        response = requests.post(target_url, data=payload)
-        response.raise_for_status()  # Проверяем статус ответа
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"Ошибка при отправке запроса: {e}")
-
-    # Возвращаем ответ
-    return response.json()
+    target_url = 'http://apirustranss.ru/'
+    response = requests.post(target_url, data=payload, files=files)
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=8000)
